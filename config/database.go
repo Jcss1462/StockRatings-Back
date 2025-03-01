@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/jcss1462/StockRatings-Back/models"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -65,4 +66,7 @@ func InitDB() {
 	dsnDb, dsnDefault, dbName := getDSN()
 	createDatabaseIfNotExists(dsnDefault, dbName)
 	ConnectDatabase(dsnDb)
+
+	// Crear tablas automáticamente
+	DB.AutoMigrate(&models.Stock{})
 }

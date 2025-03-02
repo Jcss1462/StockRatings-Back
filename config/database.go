@@ -7,7 +7,6 @@ import (
 	"os"
 
 	"github.com/jcss1462/StockRatings-Back/models"
-	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -16,12 +15,6 @@ var DB *gorm.DB
 
 // Construcción de la conexión usando variables de entorno
 func getDSN() (dsnDb string, dsnDefault string, dbName string) {
-	// Cargar variables de entorno desde .env
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("❌ Error cargando el archivo .env", err)
-	}
-
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")

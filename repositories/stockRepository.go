@@ -39,3 +39,15 @@ func InsertStocks(stocks []models.Stock) error {
 
 	return tx.Commit().Error
 }
+
+func GetAllStocks() ([]models.Stock, error) {
+	db := config.DB
+	var stocks []models.Stock
+
+	err := db.Find(&stocks).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return stocks, nil
+}

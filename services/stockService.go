@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	"github.com/jcss1462/StockRatings-Back/dtos"
+	"github.com/jcss1462/StockRatings-Back/models"
 	"github.com/jcss1462/StockRatings-Back/repositories"
 )
 
@@ -78,4 +79,8 @@ func apiRequest(clientToken, apiUrl, nextPage string) (dtos.ApiStockResponse, er
 	}
 
 	return response, nil
+}
+
+func GetAllStocks() ([]models.Stock, error) {
+	return repositories.GetAllStocks()
 }

@@ -35,3 +35,12 @@ func Sync(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Datos de Stock actualizados correctamente"})
 }
+
+func GetAllStocks(c *gin.Context) {
+	stocks, err := services.GetAllStocks()
+	if err != nil {
+		c.Error(err) // Usa el middleware de errores
+		return
+	}
+	c.JSON(http.StatusOK, stocks)
+}

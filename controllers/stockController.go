@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,14 +12,24 @@ import (
 func Sync(c *gin.Context) {
 	clientToken := c.GetHeader("Authorization")
 	if clientToken == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Token de autorización requerido"})
+
+		c.Error(&gin.Error{
+			Err:  errors.New("token de autorización requerido"),
+			Type: gin.ErrorTypePublic,
+			Meta: http.StatusUnauthorized,
+		})
+
 		return
 	}
 
 	// Llama al servicio para actualizar los stocks
 	err := services.UpdateStockFromAPI(clientToken)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.Error(&gin.Error{
+			Err:  err,
+			Type: gin.ErrorTypePublic,
+			Meta: http.StatusInternalServerError,
+		})
 		return
 	}
 

@@ -57,6 +57,10 @@ func apiRequest(clientToken, apiUrl, nextPage string) (dtos.ApiStockResponse, er
 		return dtos.ApiStockResponse{}, errors.New("error al hacer la solicitud a la API")
 	}
 
+	if resp.StatusCode == http.StatusForbidden {
+		return dtos.ApiStockResponse{}, errors.New("token de autenticacion invalido")
+	}
+
 	if resp.StatusCode != http.StatusOK {
 		return dtos.ApiStockResponse{}, errors.New("error al hacer la solicitud a la API: StatusCode: " + strconv.Itoa(resp.StatusCode))
 	}

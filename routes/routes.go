@@ -9,7 +9,7 @@ func RegisterRoutes(server *gin.Engine) {
 
 	stockGroup := server.Group("/stocks")
 	{
-		stockGroup.POST("/sync", controllers.UpdateStockFromAPI)
+		stockGroup.POST("/sync", controllers.Sync)
 	}
 
 }

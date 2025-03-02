@@ -4,7 +4,8 @@ import "gorm.io/gorm"
 
 type Stock struct {
 	gorm.Model
-	Ticker     string `json:"ticker"`
+	ID         uint   `gorm:"primaryKey;autoIncrement"` // ID autoincremental
+	Ticker     string `gorm:"unique;not null"`
 	TargetFrom string `json:"target_from"`
 	TargetTo   string `json:"target_to"`
 	Company    string `json:"company"`

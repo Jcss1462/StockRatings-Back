@@ -24,8 +24,18 @@ func UpdateStockFromAPI(clientToken string) error {
 			return err
 		}
 
-		// Inserta los datos a medida que se reciben
-		if err := repositories.InsertStocks(response.Items); err != nil {
+		// Convertir DTOs a Stocks usando mapstructure
+		var stocks []models.Stock
+		for _, dto := range response.Items {
+			stock, err := dto.ConvertToStock()
+			if err != nil {
+				return err
+			}
+			stocks = append(stocks, stock)
+		}
+
+		//Inserta los datos a medida que se reciben
+		if err := repositories.InsertStocks(stocks); err != nil {
 			return err
 		}
 

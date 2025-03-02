@@ -94,3 +94,13 @@ func apiRequest(clientToken, apiUrl, nextPage string) (dtos.ApiStockResponseDto,
 func GetAllStocks() ([]models.Stock, error) {
 	return repositories.GetAllStocks()
 }
+
+// GetBestInvestment obtiene la mejor inversión del día
+func GetBestInvestment() (*models.Stock, error) {
+	bestStock, err := repositories.GetBestInvestment()
+	if err != nil {
+		return nil, errors.New("problemas buscando una inversión recomendada")
+	}
+
+	return bestStock, nil
+}

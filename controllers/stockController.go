@@ -9,7 +9,7 @@ import (
 )
 
 // UpdateStockFromAPI recibe la solicitud HTTP y delega la lógica al servicio
-func Sync(c *gin.Context) {
+func SyncHandler(c *gin.Context) {
 	clientToken := c.GetHeader("Authorization")
 	if clientToken == "" {
 
@@ -36,11 +36,20 @@ func Sync(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Datos de Stock actualizados correctamente"})
 }
 
-func GetAllStocks(c *gin.Context) {
+func GetAllStocksHandler(c *gin.Context) {
 	stocks, err := services.GetAllStocks()
 	if err != nil {
 		c.Error(err) // Usa el middleware de errores
 		return
 	}
 	c.JSON(http.StatusOK, stocks)
+}
+
+func GetBestInvestmentHandler(c *gin.Context) {
+	bestStock, err := services.GetBestInvestment()
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, bestStock)
 }

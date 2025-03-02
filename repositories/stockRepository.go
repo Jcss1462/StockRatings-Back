@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"time"
+
 	"github.com/jcss1462/StockRatings-Back/config"
 	"github.com/jcss1462/StockRatings-Back/models"
 )
@@ -50,4 +52,23 @@ func GetAllStocks() ([]models.Stock, error) {
 	}
 
 	return stocks, nil
+}
+
+// GetBestInvestment obtiene la mejor inversión basada en TargetTo y Time
+func GetBestInvestment() (*models.Stock, error) {
+	db := config.DB
+	var bestStock models.Stock
+
+	err := db.Table("stocks").
+		Where("DATE(time) = ?", time.Now().Format("2006-01-02")).
+		Order("((target_to - target_from) / target_from) DESC").
+		Limit(1).
+		Find(&bestStock).Error
+
+	var emptyStock models.Stock
+	if bestStock == emptyStock {
+		return nil, nil
+	}
+
+	return &bestStock, err
 }

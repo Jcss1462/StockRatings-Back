@@ -17,18 +17,19 @@ func InsertStocks(stocks []models.Stock) error {
 
 	for _, stock := range stocks {
 		err := tx.Exec(`
-			INSERT INTO stocks (ticker, target_from, target_to, company, action, brokerage, rating_from, rating_to, time) 
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+			INSERT INTO stocks (ticker, target_from, target_to, company, action, brokerage, rating_from, rating_to, time, created_at, updated_at) 
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
 			ON CONFLICT (ticker) DO UPDATE 
 			SET target_from = EXCLUDED.target_from, 
-			    target_to = EXCLUDED.target_to, 
-			    company = EXCLUDED.company, 
-			    action = EXCLUDED.action, 
-			    brokerage = EXCLUDED.brokerage, 
-			    rating_from = EXCLUDED.rating_from, 
-			    rating_to = EXCLUDED.rating_to, 
-			    time = EXCLUDED.time
-		`, stock.Ticker, stock.TargetFrom, stock.TargetTo, stock.Company, stock.Action, stock.Brokerage, stock.RatingFrom, stock.RatingTo, stock.Time).Error
+				target_to = EXCLUDED.target_to, 
+				company = EXCLUDED.company, 
+				action = EXCLUDED.action, 
+				brokerage = EXCLUDED.brokerage, 
+				rating_from = EXCLUDED.rating_from, 
+				rating_to = EXCLUDED.rating_to, 
+				time = EXCLUDED.time,
+				updated_at = NOW() -- Esto actualiza la fecha solo en caso de conflicto
+			`, stock.Ticker, stock.TargetFrom, stock.TargetTo, stock.Company, stock.Action, stock.Brokerage, stock.RatingFrom, stock.RatingTo, stock.Time).Error
 
 		if err != nil {
 			tx.Rollback() // Revierte la transacción en caso de error

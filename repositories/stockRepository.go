@@ -30,7 +30,18 @@ func InsertStocks(stocks []models.Stock) error {
 				rating_from = EXCLUDED.rating_from, 
 				rating_to = EXCLUDED.rating_to, 
 				time = EXCLUDED.time,
-				updated_at = NOW() -- Esto actualiza la fecha solo en caso de conflicto
+				updated_at =
+					CASE 
+						WHEN stocks.target_from <> EXCLUDED.target_from 
+							OR stocks.target_to <> EXCLUDED.target_to 
+							OR stocks.action <> EXCLUDED.action 
+							OR stocks.brokerage <> EXCLUDED.brokerage 
+							OR stocks.rating_from <> EXCLUDED.rating_from 
+							OR stocks.rating_to <> EXCLUDED.rating_to 
+							OR stocks.time <> EXCLUDED.time
+						THEN NOW() 
+						ELSE stocks.updated_at -- Esto actualiza la fecha solo en caso de conflicto
+					END
 			`, stock.Ticker, stock.TargetFrom, stock.TargetTo, stock.Company, stock.Action, stock.Brokerage, stock.RatingFrom, stock.RatingTo, stock.Time).Error
 
 		if err != nil {

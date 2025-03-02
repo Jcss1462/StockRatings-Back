@@ -1,6 +1,6 @@
 package dtos
 
-type ApiStockResponse struct {
+type ApiStockResponseDto struct {
 	Items     []StockDto
 	Next_page string
 }

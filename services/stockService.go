@@ -49,7 +49,7 @@ func UpdateStockFromAPI(clientToken string) error {
 }
 
 // apiRequest realiza la solicitud a la API externa y devuelve la respuesta estructurada
-func apiRequest(clientToken, apiUrl, nextPage string) (dtos.ApiStockResponse, error) {
+func apiRequest(clientToken, apiUrl, nextPage string) (dtos.ApiStockResponseDto, error) {
 	fullUrl := apiUrl
 	if nextPage != "" {
 		fullUrl += "?next_page=" + nextPage
@@ -57,7 +57,7 @@ func apiRequest(clientToken, apiUrl, nextPage string) (dtos.ApiStockResponse, er
 
 	req, err := http.NewRequest("GET", fullUrl, nil)
 	if err != nil {
-		return dtos.ApiStockResponse{}, errors.New("error creando la solicitud HTTP")
+		return dtos.ApiStockResponseDto{}, errors.New("error creando la solicitud HTTP")
 	}
 
 	req.Header.Set("Authorization", clientToken)
@@ -65,27 +65,27 @@ func apiRequest(clientToken, apiUrl, nextPage string) (dtos.ApiStockResponse, er
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return dtos.ApiStockResponse{}, errors.New("error al hacer la solicitud a la API")
+		return dtos.ApiStockResponseDto{}, errors.New("error al hacer la solicitud a la API")
 	}
 
 	if resp.StatusCode == http.StatusForbidden {
-		return dtos.ApiStockResponse{}, errors.New("token de autenticacion invalido")
+		return dtos.ApiStockResponseDto{}, errors.New("token de autenticacion invalido")
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return dtos.ApiStockResponse{}, errors.New("error al hacer la solicitud a la API: StatusCode: " + strconv.Itoa(resp.StatusCode))
+		return dtos.ApiStockResponseDto{}, errors.New("error al hacer la solicitud a la API: StatusCode: " + strconv.Itoa(resp.StatusCode))
 	}
 
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return dtos.ApiStockResponse{}, errors.New("error al leer la respuesta de la API")
+		return dtos.ApiStockResponseDto{}, errors.New("error al leer la respuesta de la API")
 	}
 
-	var response dtos.ApiStockResponse
+	var response dtos.ApiStockResponseDto
 	if err := json.Unmarshal(body, &response); err != nil {
-		return dtos.ApiStockResponse{}, errors.New("error al parsear el JSON recibido")
+		return dtos.ApiStockResponseDto{}, errors.New("error al parsear el JSON recibido")
 	}
 
 	return response, nil

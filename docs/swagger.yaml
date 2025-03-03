@@ -1,0 +1,99 @@
+basePath: /
+definitions:
+  models.Stock:
+    description: Modelo de una acción en la base de datos
+    properties:
+      action:
+        example: Buy
+        type: string
+      brokerage:
+        example: Goldman Sachs
+        type: string
+      company:
+        example: Apple Inc.
+        type: string
+      created_at:
+        example: "2025-03-02T15:04:05Z"
+        type: string
+      deleted_at:
+        example: "2025-03-02T15:04:05Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      rating_from:
+        example: Neutral
+        type: string
+      rating_to:
+        example: Buy
+        type: string
+      target_from:
+        example: 150
+        type: number
+      target_to:
+        example: 180
+        type: number
+      ticker:
+        example: AAPL
+        type: string
+      time:
+        example: "2025-03-02"
+        type: string
+      updated_at:
+        example: "2025-03-02T15:04:05Z"
+        type: string
+    type: object
+host: localhost:8081
+info:
+  contact: {}
+  description: API para manejar stocks y recomendaciones de inversión.
+  title: Stock Ratings API
+  version: "1.0"
+paths:
+  /stocks:
+    get:
+      description: Retorna la lista completa de acciones disponibles en la base de
+        datos.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Lista de acciones disponibles
+          schema:
+            items:
+              $ref: '#/definitions/models.Stock'
+            type: array
+      summary: Obtiene todos los stocks
+      tags:
+      - Stocks
+  /stocks/recommendation:
+    get:
+      description: Retorna la acción con mayor potencial de crecimiento según los
+        datos almacenados. Si no hay recomendaciones, devuelve `null`.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: La mejor acción recomendada
+          schema:
+            $ref: '#/definitions/models.Stock'
+      summary: Obtiene la mejor inversión
+      tags:
+      - Stocks
+  /stocks/sync:
+    post:
+      description: Llama a un servicio externo para actualizar los datos de los stocks.
+        Requiere un token de autorización en el header.
+      parameters:
+      - description: Token de autorización (Bearer)
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Sincroniza los datos de los stocks
+      tags:
+      - Stocks
+swagger: "2.0"

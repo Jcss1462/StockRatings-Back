@@ -6,6 +6,7 @@ API para la gestión de acciones y recomendaciones de inversión, desarrollada c
 Antes de ejecutar el proyecto, asegúrate de tener instalados:  
 - **Go 1.24.0** → [Descargar Go](https://go.dev/dl/)  
 - **Docker** → [Instalar Docker](https://docs.docker.com/get-docker/)  
+  - **Importante:** Si estás en Windows o macOS, asegúrate de que **Docker Desktop** esté abierto antes de ejecutar cualquier comando de Docker.
 
 ## 🛠 **Instalación y Configuración**  
 
@@ -28,6 +29,8 @@ notepad .env  # Para editarlo en Windows
 📌 **Nota:** No es necesario crear manualmente el archivo `.env`, ya que está incluido en el repositorio.  
 
 ### **3️⃣ Levantar la base de datos en Docker**  
+
+**📌 Importante:** Si estás en **Windows o macOS**, asegúrate de que **Docker Desktop esté abierto** antes de ejecutar los siguientes comandos.
 
 Ejecuta el siguiente comando para iniciar **CockroachDB** en un contenedor de Docker:  
 
@@ -82,7 +85,7 @@ go run .
 
 Esto iniciará la API en `http://localhost:8081/` y, si estás en **modo desarrollo**, abrirá automáticamente **Swagger** en `http://localhost:8081/swagger/index.html`.  
 
-## 📖 **Documentación de la API**  
+## 📚 **Documentación de la API**  
 
 La API cuenta con documentación generada con **Swagger**. Para verla, inicia la aplicación y accede a:  
 
@@ -97,6 +100,7 @@ go build
 
 ### **Ejecutar la aplicación compilada**  
 ```sh
-.\StockRatings-Back.exe
+./StockRatings-Back  # En macOS/Linux
+StockRatings-Back.exe  # En Windows
 ```
----
+

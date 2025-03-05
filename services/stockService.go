@@ -3,10 +3,10 @@ package services
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
-	"strconv"
 
 	"github.com/jcss1462/StockRatings-Back/dtos"
 	"github.com/jcss1462/StockRatings-Back/models"
@@ -73,7 +73,7 @@ func apiRequest(clientToken, apiUrl, nextPage string) (dtos.ApiStockResponseDto,
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return dtos.ApiStockResponseDto{}, errors.New("error al hacer la solicitud a la API: StatusCode: " + strconv.Itoa(resp.StatusCode))
+		return dtos.ApiStockResponseDto{}, fmt.Errorf("error en la respuesta de la API, código: %d, response: %+v", resp.StatusCode, resp)
 	}
 
 	defer resp.Body.Close()

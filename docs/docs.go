@@ -98,18 +98,6 @@ const docTemplate = `{
                     "type": "string",
                     "example": "Apple Inc."
                 },
-                "created_at": {
-                    "type": "string",
-                    "example": "2025-03-02T15:04:05Z"
-                },
-                "deleted_at": {
-                    "type": "string",
-                    "example": "2025-03-02T15:04:05Z"
-                },
-                "id": {
-                    "type": "integer",
-                    "example": 1
-                },
                 "rating_from": {
                     "type": "string",
                     "example": "Neutral"
@@ -133,10 +121,6 @@ const docTemplate = `{
                 "time": {
                     "type": "string",
                     "example": "2025-03-02"
-                },
-                "updated_at": {
-                    "type": "string",
-                    "example": "2025-03-02T15:04:05Z"
                 }
             }
         }

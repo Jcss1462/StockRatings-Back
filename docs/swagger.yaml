@@ -12,15 +12,6 @@ definitions:
       company:
         example: Apple Inc.
         type: string
-      created_at:
-        example: "2025-03-02T15:04:05Z"
-        type: string
-      deleted_at:
-        example: "2025-03-02T15:04:05Z"
-        type: string
-      id:
-        example: 1
-        type: integer
       rating_from:
         example: Neutral
         type: string
@@ -38,9 +29,6 @@ definitions:
         type: string
       time:
         example: "2025-03-02"
-        type: string
-      updated_at:
-        example: "2025-03-02T15:04:05Z"
         type: string
     type: object
 host: localhost:8081

@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jcss1462/StockRatings-Back/config"
 	_ "github.com/jcss1462/StockRatings-Back/docs"
@@ -24,25 +26,37 @@ func main() {
 	//cargo las variables de entorno
 	utils.LoadEnvFile()
 
-	// Conectar a la BD
-	config.InitDB()
-
-	//configuro e servidor y registro las rutas
-	server := gin.Default()
-	routes.RegisterRoutes(server)
-
 	// Obtener el puerto y validar que no esté vacío
 	appPort := os.Getenv("APP_PORT")
 	if appPort == "" {
 		appPort = "8081" // Valor por defecto si no está definido en el .env
 	}
 
-	// Agregar Swagger solo en desarrollo
+	// Conectar a la BD
+	config.InitDB()
+
+	//Inicializo el servidor
+	server := gin.Default()
+
+	//Configuro CORS
+	server.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
+	// Agregar Swagger (solo en desarrollo)
 	if os.Getenv("APP_ENV") != "production" {
 		utils.GenerateSwaggerDocs() // 🔹 Generar Swagger antes de servirlo
 		server.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 		utils.OpenSwaggerUI(runtime.GOOS, appPort) // 🔹 Abrir automáticamente en el navegador
 	}
+
+	//registro las rutas
+	routes.RegisterRoutes(server)
 
 	//corro el servidor
 	// Iniciar el servidor

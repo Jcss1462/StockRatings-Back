@@ -14,7 +14,7 @@ func RegisterRoutes(server *gin.Engine) {
 	stockGroup := server.Group("/stocks")
 	{
 		stockGroup.POST("/sync", controllers.SyncHandler)
-		stockGroup.GET("/", controllers.GetAllStocksHandler)
+		stockGroup.GET("", controllers.GetAllStocksHandler)
 		stockGroup.GET("/recommendation", controllers.GetBestInvestmentHandler)
 	}
 

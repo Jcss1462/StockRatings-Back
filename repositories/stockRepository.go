@@ -57,7 +57,7 @@ func GetAllStocks() ([]models.Stock, error) {
 	db := config.DB
 	var stocks []models.Stock
 
-	err := db.Order("time DESC, target_to DESC").Find(&stocks).Error
+	err := db.Order("DATE(time) DESC, target_to DESC").Find(&stocks).Error
 	if err != nil {
 		return nil, err
 	}
